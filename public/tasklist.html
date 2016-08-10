@@ -1,0 +1,58 @@
+<html>
+	<head>
+		<title>Project tasks</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular-route.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular-resource.js"></script>
+		<script src="javascripts/pTask.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+		<link rel="stylesheet" href="stylesheets/style.css">
+	</head>
+	<body ng-app="pTask">
+		<div id='main' class="container">
+			<nav class="navbar-fluid navbar-default navbar-fixed-top">
+				<div class="container">
+					    <a class="navbar-brand" href="#"> Project Task </a>
+					    <p class="navbar-text"> Project Task dashboard</p>
+					    <p class="navbar-right navbar-text" ng-hide="authenticated"><a href="#/login">Login</a> or <a href="#/register">Register</a></p>
+					    <p class="navbar-right navbar-text" ng-show="authenticated"><a href="#" ng-click="signout()">Logout</a></p>
+					    <p class="navbar-right navbar-text" ng-show="authenticated">Signed in as {{current_user}}</p>		
+				</div>
+			</nav>
+			<div class="col-md-offset-2 col-md-8">
+				<div class="clearfix">
+  <form ng-Submit="post()" ><!-- ng-show="authenticated"> -->
+    <h4>{{current_user}} says</h4>
+    <textarea required class="form-control" maxlength="200" rows="3" placeholder="Say something" ng-model="newPost.text"></textarea>
+    <input class="btn submit-btn pull-right" type="submit" value="Chirp!" />
+  </form>
+</div>
+<div id="post-stream" class="col-md-offset-2 col-md-8">
+	<h4>Task List</h4>
+		<div class="task">
+            <table class="table table-bordered table-hover"></table>
+                <thead>
+                    <tr>
+                        <th>Task ID</th>
+                        <th>Created by</th>
+                        <th>Created Date</th>
+                        <th>Description</th>
+                        <th>Pilot</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="task in tasks | orderBy:'id':ture">
+                        <td>{{task.id}}</td>
+                        <td>{{task.created_by}}</td>
+                        <td>{{task.created_at}}</td>
+                        <td>{{task.text}}</td>
+                        <td>{{task.pilot}}</td>
+                    </tr>
+                </tbody>
+            </table>
+		</div>
+</div>
+			</div>
+		</div>
+	</body>
+</html>

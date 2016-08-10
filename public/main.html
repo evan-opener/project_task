@@ -1,0 +1,59 @@
+<div id="post-stream">
+	<h4>Task List</h4>
+		<div class="task">
+            <table class="table table-bordered table-hover"  ng-model="task">
+                <thead>
+                    <tr>
+                        <th>Task ID</th>
+                        <th>Created by</th>
+                        <th>Created Date</th>
+                        <th>Description</th>
+                        <th>Pilot</th>
+                    </tr>
+                </thead>
+                <tbody>
+					<!-- here is only for test>
+					<tr>
+						<td>{{task.id}}</td>
+                        <td>{{task.created_by}}</td>
+                        <td>{{task.created_at}}</td>
+                        <td>{{task.text}}</td>
+                        <td>{{task.pilot}}</td>
+					<tr>
+					-->
+					
+                    <tr ng-repeat="task in tasks | orderBy:'id':ture"*/>
+                        <td>{{task.id}}</td>
+                        <td>{{task.created_by}}</td>
+                        <td>{{task.created_at}}</td>
+                        <td>{{task.text}}</td>
+                        <td>{{task.pilot}}</td>
+                    </tr>
+					
+                </tbody>
+            </table>
+		</div>
+</div>
+
+<div id="publish_task">
+	<form ng-Submit="pTask()" ng-controller="mainController"> <!--if submit, use task() -->
+		<h2>Publish a task</h2>
+		<form role="form">
+			<div class="form-group">
+				<label for="task">Task description:</label>
+				<textarea class="form-control" maxlength="200" rows="5" ng-model="newTask.text"></textarea>
+			</div>
+			<div class="form-group">
+				<label for="pilot">Pilot</label>
+				<input type="polit" class="form-control" id="polit" placeholder="Publish to" ng-model="newTask.polit">
+			</div>
+			<div class="checkbox">
+				<label><input type="checkbox"> Notify polit</label>
+			</div>
+			<button type="submit" class="btn btn-default">Submit</button>
+		</form>
+	</form>
+ </div>
+
+
+		
