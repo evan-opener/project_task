@@ -30,20 +30,22 @@ app.config(function($routeProvider){
 });
 
 app.factory('postService', function($resource){
-	return $resource('/api/posts/:id');
+	return $resource('/api/task/:id');
 });
 
 app.controller('mainController', function(postService, $scope, $rootScope){
-	$scope.posts = postService.query();
-	$scope.newPost = {created_by: '', text: '', created_at: ''};
+	$scope.tasks = postService.query();
+	$scope.newTask = {created_by: '', text: '', created_at: '', pilot: ''};
+    //$scope.task.id = tasks.indexOF(task);
 	
-	$scope.post = function() {
-	  $scope.newPost.created_by = $rootScope.current_user;
-	  $scope.newPost.created_at = Date.now();
-	  postService.save($scope.newPost, function(){
-	    $scope.posts = postService.query();
-	    $scope.newPost = {created_by: '', text: '', created_at: ''};
+	$scope.pTask = function() {
+	  $scope.newTask.created_by = $rootScope.current_user;
+	  $scope.newTask.created_at = Date.now();
+	  postService.save($scope.newTask, function(){
+	    $scope.tasks = postService.query();
+	    $scope.newTask = {created_by: '', text: '', created_at: '', pilot: ''};
 	  });
+      $scope.tasks = postService.query();
 	};
 });
 

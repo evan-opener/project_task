@@ -1,7 +1,7 @@
-<div id="post-stream">
+<div id="task-stream">
 	<h4>Task List</h4>
 		<div class="task">
-            <table class="table table-bordered table-hover"  ng-model="task">
+            <table class="table table-bordered table-hover">
                 <thead>
                     <tr>
                         <th>Task ID</th>
@@ -23,7 +23,7 @@
 					-->
 					
                     <tr ng-repeat="task in tasks | orderBy:'id':ture"*/>
-                        <td>{{task.id}}</td>
+                        <td> </td>
                         <td>{{task.created_by}}</td>
                         <td>{{task.created_at}}</td>
                         <td>{{task.text}}</td>
@@ -36,7 +36,7 @@
 </div>
 
 <div id="publish_task">
-	<form ng-Submit="pTask()" ng-controller="mainController"> <!--if submit, use task() -->
+	<form ng-Submit="pTask()" ng-show="authenticated" ng-controller="mainController"> <!--if submit, use task() -->
 		<h2>Publish a task</h2>
 		<form role="form">
 			<div class="form-group">
@@ -45,7 +45,7 @@
 			</div>
 			<div class="form-group">
 				<label for="pilot">Pilot</label>
-				<input type="polit" class="form-control" id="polit" placeholder="Publish to" ng-model="newTask.polit">
+				<input type="polit" class="form-control" id="pilot" placeholder="Publish to" ng-model="newTask.pilot">
 			</div>
 			<div class="checkbox">
 				<label><input type="checkbox"> Notify polit</label>

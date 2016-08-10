@@ -24,61 +24,62 @@ function isAuthenticated (req, res, next) {
 router.use('/task', isAuthenticated);
 
 router.route('/task')
-	//creates a new post
-	.task(function(req, res){
+	//creates a new task
+	.post(function(req, res){
 
-		var post = new Post();
-		post.text = req.body.text;
-		post.created_by = req.body.created_by;
-		post.save(function(err, post) {
+		var task = new Task();
+		task.text = req.body.text;
+		task.created_by = req.body.created_by;
+        task.pilot = req.body.polit;
+		task.save(function(err, task) {
 			if (err){
 				return res.send(500, err);
 			}
-			return res.json(post);
+			return res.json(task);
 		});
 	})
-	//gets all posts
+	//gets all tasks
 	.get(function(req, res){
 		console.log('debug1');
-		Post.find(function(err, posts){
+		Task.find(function(err, tasks){
 			console.log('debug2');
 			if(err){
 				return res.send(500, err);
 			}
-			return res.send(200,posts);
+			return res.send(200,tasks);
 		});
 	});
 
-//post-specific commands. likely won't be used
-router.route('/posts/:id')
-	//gets specified post
+//task-specific commands. likely won't be used
+router.route('/task/:id')
+	//gets specified task
 	.get(function(req, res){
-		Post.findById(req.params.id, function(err, post){
+		Task.findById(req.params.id, function(err, task){
 			if(err)
 				res.send(err);
-			res.json(post);
+			res.json(task);
 		});
 	}) 
-	//updates specified post
+	//updates specified task
 	.put(function(req, res){
-		Post.findById(req.params.id, function(err, post){
+		Task.findById(req.params.id, function(err, task){
 			if(err)
 				res.send(err);
 
-			post.created_by = req.body.created_by;
-			post.text = req.body.text;
+			task.created_by = req.body.created_by;
+			task.text = req.body.text;
 
-			post.save(function(err, post){
+			task.save(function(err, task){
 				if(err)
 					res.send(err);
 
-				res.json(post);
+				res.json(task);
 			});
 		});
 	})
-	//deletes the post
+	//deletes the task
 	.delete(function(req, res) {
-		Post.remove({
+		Task.remove({
 			_id: req.params.id
 		}, function(err) {
 			if (err)
