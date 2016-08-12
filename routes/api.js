@@ -30,7 +30,8 @@ router.route('/task')
 		var task = new Task();
 		task.text = req.body.text;
 		task.created_by = req.body.created_by;
-        task.pilot = req.body.polit;
+        task.pilot = req.body.pilot;
+        console.log(task);
 		task.save(function(err, task) {
 			if (err){
 				return res.send(500, err);

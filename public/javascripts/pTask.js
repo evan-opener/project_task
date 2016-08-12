@@ -41,6 +41,7 @@ app.controller('mainController', function(postService, $scope, $rootScope){
 	$scope.pTask = function() {
 	  $scope.newTask.created_by = $rootScope.current_user;
 	  $scope.newTask.created_at = Date.now();
+      console.log($scope.newTask);  //debug the db document saving
 	  postService.save($scope.newTask, function(){
 	    $scope.tasks = postService.query();
 	    $scope.newTask = {created_by: '', text: '', created_at: '', pilot: ''};
