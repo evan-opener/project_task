@@ -35,6 +35,7 @@ app.factory('postService', function($resource){
 
 app.controller('mainController', function(postService, $scope, $rootScope){
 	$scope.tasks = postService.query();
+    $scope.id = 1;
 	$scope.newTask = {created_by: '', text: '', created_at: '', pilot: ''};
     //$scope.task.id = tasks.indexOF(task);
 	

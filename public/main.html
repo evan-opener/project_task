@@ -23,7 +23,7 @@
 					-->
 					
                     <tr ng-repeat="task in tasks | orderBy:'id':ture"*/>
-                        <td> </td>
+                        <td>{{tasks.indexOf(task) + id}} </td>
                         <td>{{task.created_by}}</td>
                         <td>{{task.created_at}}</td>
                         <td>{{task.text}}</td>
