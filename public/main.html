@@ -1,14 +1,15 @@
 <div id="task-stream">
 	<h4>Task List</h4>
 		<div class="task">
-            <table class="table table-bordered table-hover">
+            <table class="table table-bordered table-hover table-responsive">
                 <thead>
                     <tr>
-                        <th>Task ID</th>
-                        <th>Created by</th>
+                        <th>ID</th>
+                        <th>Author</th>
                         <th>Created Date</th>
                         <th>Description</th>
                         <th>Pilot</th>
+                        <th>Close Date</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -25,9 +26,10 @@
                     <tr ng-repeat="task in tasks | orderBy:'id':ture"*/>
                         <td>{{tasks.indexOf(task) + id}} </td>
                         <td>{{task.created_by}}</td>
-                        <td>{{task.created_at}}</td>
+                        <td>{{task.created_at | date:"yyyy/MM/dd"}}</td>
                         <td>{{task.text}}</td>
                         <td>{{task.pilot}}</td>
+                        <td>{{task.closeDate | date:"yyyy/MM/dd"}}</td>
                     </tr>
 					
                 </tbody>
@@ -36,16 +38,16 @@
 </div>
 
 <div id="publish_task">
-	<form ng-Submit="pTask()" ng-show="authenticated" ng-controller="mainController"> <!--if submit, use task() -->
+	<form name="taskForm" ng-Submit="taskForm.$valid && pTask()" ng-show="authenticated" ng-controller="mainController" novalidate> <!--if submit, use task() -->
 		<h2>Publish a task</h2>
 		<form role="form">
 			<div class="form-group">
 				<label for="task">Task description:</label>
-				<textarea class="form-control" maxlength="200" rows="5" ng-model="newTask.text"></textarea>
+				<textarea class="form-control" placeholder="Write a description for a task" maxlength="200" rows="3" ng-model="newTask.text" required></textarea>
 			</div>
 			<div class="form-group">
 				<label for="pilot">Pilot</label>
-				<input type="polit" class="form-control" id="pilot" placeholder="Publish to" ng-model="newTask.pilot">
+				<input type="polit" class="form-control" id="pilot" placeholder="Publish to" ng-model="newTask.pilot" required>
 			</div>
 			<div class="checkbox">
 				<label><input type="checkbox"> Notify polit</label>
