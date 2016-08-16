@@ -35,19 +35,22 @@ app.factory('postService', function($resource){
 
 app.controller('mainController', function(postService, $scope, $rootScope){
 	$scope.tasks = postService.query();
-    $scope.id = 1;
+    console.log($scope.tasks); // debug1
 	$scope.newTask = {created_by: '', text: '', created_at: '', pilot: ''};
-    //$scope.task.id = tasks.indexOF(task);
 	
 	$scope.pTask = function() {
 	  $scope.newTask.created_by = $rootScope.current_user;
 	  $scope.newTask.created_at = Date.now();
-      console.log($scope.newTask);  //debug the db document saving
+      
 	  postService.save($scope.newTask, function(){
 	    $scope.tasks = postService.query();
+        
+        console.log('Add new task');
+        console.log($scope.tasks);  //debug the db document saving
 	    $scope.newTask = {created_by: '', text: '', created_at: '', pilot: ''};
-	  });
-      $scope.tasks = postService.query();
+        //$scope.$apply();
+      });
+    
 	};
 });
 

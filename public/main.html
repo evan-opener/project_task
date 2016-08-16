@@ -23,8 +23,8 @@
 					<tr>
 					-->
 					
-                    <tr ng-repeat="task in tasks | orderBy:'id':ture"*/>
-                        <td>{{tasks.indexOf(task) + id}} </td>
+                    <tr ng-repeat="task in tasks | orderBy:'created_at':ture"*/>
+                        <td>{{tasks.indexOf(task) + 1}}</td>
                         <td>{{task.created_by}}</td>
                         <td>{{task.created_at | date:"yyyy/MM/dd"}}</td>
                         <td>{{task.text}}</td>
@@ -38,7 +38,7 @@
 </div>
 
 <div id="publish_task">
-	<form name="taskForm" ng-Submit="taskForm.$valid && pTask()" ng-show="authenticated" ng-controller="mainController" novalidate> <!--if submit, use task() -->
+	<form name="taskForm" ng-Submit="taskForm.$valid && pTask()" ng-show="authenticated" novalidate> <!--if submit, use task() -->
 		<h2>Publish a task</h2>
 		<form role="form">
 			<div class="form-group">
