@@ -69,6 +69,7 @@ router.route('/task/:id')
 
 			task.created_by = req.body.created_by;
 			task.text = req.body.text;
+            task.pilot = req.body.pilot;
 
 			task.save(function(err, task){
 				if(err)
@@ -83,8 +84,10 @@ router.route('/task/:id')
 		Task.remove({
 			_id: req.params.id
 		}, function(err) {
-			if (err)
+			if (err) {
 				res.send(err);
+                console.log('Delete Err'); //debug d
+            }
 			res.json("deleted :(");
 		});
 	});

@@ -48,11 +48,24 @@ app.controller('mainController', function(postService, $scope, $rootScope){
         console.log('Add new task');
         console.log($scope.tasks);  //debug the db document saving
 	    $scope.newTask = {created_by: '', text: '', created_at: '', pilot: ''};
-        //$scope.$apply();
-      });
+      
+    });
     
 	};
-});
+    
+    $scope.detailTask = function(task){
+        alert('check task ' + task._id);
+        //$scope.tasks = postService.query(this.id);
+    }; 
+    
+    $scope.delTask = function(task){
+        //var $scope.taskId = task.objectID;
+        alert('Remove task ' + task._id);
+        postService.remove({id:task._id});
+        $scope.tasks = postService.query();
+    };
+
+}); 
 
 app.controller('authController', function($scope, $http, $rootScope, $location){
   $scope.user = {username: '', password: ''};

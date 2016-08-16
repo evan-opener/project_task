@@ -10,6 +10,7 @@
                         <th>Description</th>
                         <th>Pilot</th>
                         <th>Close Date</th>
+                        <th>Operation</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -30,6 +31,11 @@
                         <td>{{task.text}}</td>
                         <td>{{task.pilot}}</td>
                         <td>{{task.closeDate | date:"yyyy/MM/dd"}}</td>
+                        <td>
+                            <a class="btn btn-primary btn-sm" ng-click="delTask(task)" ng-show="authenticated">Delete</a>
+                            <a class="btn btn-primary btn-sm" ng-click="detailTask(task)" ng-show="authenticated">Detail</a>
+                    
+                        </td>
                     </tr>
 					
                 </tbody>
