@@ -23,7 +23,15 @@ app.set('view engine', 'ejs');
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(session({
-  secret: 'keyboard cat'
+    secret: 'keyboard cat',
+    name: 'mycookie',
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+        secure: false,
+        maxAge : 1000*60*60*24*7
+    }
+  
 }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
