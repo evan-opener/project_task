@@ -1,20 +1,31 @@
 'use strict'
-var app = angular.module('pTask', ['ngRoute', 'ngResource', 'ngCookies']).run(function ($rootScope, $http) {
-    /*if(!checkCreds()){
-        $location.path('/login');
-    };*/
+var app = angular.module('pTask', ['ngRoute', 'ngResource', 'ngCookies']).run(function ($rootScope, $http, $location, $cookies) {
+             
     
-    $rootScope.current_user='';
-    $rootScope.authenticated = '';
-    
-    /*if (cookieUsername != '') {
-        $rootScope.current_user = cookieUsername;
-        //$rootScope.authenticated = true;
-    }
-    else {
-        $rootScope.current_user = '';
-        $rootScope.authenticated = false;
-    }*/
+    // add a listen for the page refresh
+    $rootScope.$on('$locationChangeStart', function(event, next, current){
+        var user = '';
+        if(typeof($cookies.get('user'))=='string'){
+            user = JSON.parse($cookies.get('user'));
+        };
+        
+        //if no user loged in, go to login.html
+        if(user == '') {
+            $rootScope.current_user='';
+            $rootScope.authenticated = false;
+            if (next.includes('register')) {
+                //if link to resgister, allow
+                
+            } else {
+                //Otherwise direct to login
+            };
+            
+        } else {
+            $rootScope.authenticated = true;
+            $rootScope.current_user = user.username;
+        };
+    });
+    // signout and clean the cookies
     $rootScope.signout = function () {
         console.log('Logout'); //debug for logout
         $http.get('/auth/signout');
@@ -84,7 +95,7 @@ app.controller('mainController', function ($scope, $rootScope, postService) {
         $scope.tasks = postService.query();
     };
 });
-app.controller('authController', function ($scope, $http, $rootScope, $location) {
+app.controller('authController', function ($scope, $http, $rootScope, $location, $cookies) {
     $scope.user = {
         username: ''
         , password: ''
@@ -97,13 +108,15 @@ app.controller('authController', function ($scope, $http, $rootScope, $location)
         $scope.showpassword = !$scope.showpassword;
     };
     
+    //login function
     $scope.login = function () {
         $http.post('/auth/login', $scope.user).success(function (data) {
             if (data.state == 'success') {
                 $rootScope.authenticated = true;
                 $rootScope.current_user = data.user.username;
                 // set cookies
-                
+                $cookies.put('user', JSON.stringify(data.user));
+                // redirect to '/'
                 $location.path('/');
             }
             else {
