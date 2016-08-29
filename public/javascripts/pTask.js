@@ -1,7 +1,8 @@
 'use strict'
 var app = angular.module('pTask', ['ngRoute', 'ngResource', 'ngCookies']).run(function ($rootScope, $http, $location, $cookies) {
              
-    
+    $rootScope.authenticated = false;
+    $rootScope.current_user = '';
     // add a listen for the page refresh
     $rootScope.$on('$locationChangeStart', function(event, next, current){
         var user = '';
@@ -28,10 +29,13 @@ var app = angular.module('pTask', ['ngRoute', 'ngResource', 'ngCookies']).run(fu
     // signout and clean the cookies
     $rootScope.signout = function () {
         console.log('Logout'); //debug for logout
-        $http.get('/auth/signout');
-       
+        
+        
+        $cookies.remove('user');
         $rootScope.authenticated = false;
         $rootScope.current_user = '';
+        $http.get('/auth/signout');
+        $location.path('/');
     };
 });
 app.config(function ($routeProvider) {
