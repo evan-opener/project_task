@@ -1,7 +1,11 @@
-var app = angular.module('pTask', ['ngRoute', 'ngResource', 'ngCookies']).run(function ($rootScope, $http, $cookies, checkCreds, $location) {
-    if(!checkCreds()){
+'use strict'
+var app = angular.module('pTask', ['ngRoute', 'ngResource', 'ngCookies']).run(function ($rootScope, $http) {
+    /*if(!checkCreds()){
         $location.path('/login');
-    };
+    };*/
+    
+    $rootScope.current_user='';
+    $rootScope.authenticated = '';
     
     /*if (cookieUsername != '') {
         $rootScope.current_user = cookieUsername;
@@ -14,7 +18,7 @@ var app = angular.module('pTask', ['ngRoute', 'ngResource', 'ngCookies']).run(fu
     $rootScope.signout = function () {
         console.log('Logout'); //debug for logout
         $http.get('/auth/signout');
-        userKeepService.clearCookieData;
+       
         $rootScope.authenticated = false;
         $rootScope.current_user = '';
     };
@@ -40,69 +44,8 @@ app.config(function ($routeProvider) {
 app.factory('postService', function ($resource) {
     return $resource('/api/task/:id');
 });
-app.factory('userKeepService', ['$cookies', function ($cookies) {
-    var userName = '';
-    //var userAuth = false;
-    return {
-        setCookieData: function (username) {
-            userName = username;
-            //userAuth = auth;
-            $cookies.put('userName', username);
-            //$cookies.put('Auth', auth);
-        }
-        , getCookieData: function () {
-            userName = $cookies.get('userName');
-            //userAuth = $cookies.get('Auth');
-            return userName;
-        }
-        , clearCookieData: function () {
-            userName = '';
-            $cookies.remove('userName');
-        }
-    }
-}]);
-// create a service to save user's credentials once authenticated
-// The setCreds can be called as
-// setCreds($scope.username, $scope.password);
-app.factory('setCreds', ['$cookies', function ($cookies) {
-    return function (un, pw) {
-        var token = un.concat(":", pw); // combine user name as json object as username:password
-        $cookies.appCreds = token;
-        $cookies.appUsername = un;
-    };
-}]);
-// create the service to check the user credentials
-// Useage:
-// if (checkCreds()) { do something } ;
-app.factory('checkCreds', ['$cookies', function ($cookies) {
-    return function () {
-        var returnVal = false;
-        var appCreds = $cookies.appCreds;
-        if (appCreds !== undefined && appCreds !=="") {
-            returnVal = true;
-        };
-    return returnVal;
-    };
-}]);
-// create a service to delete user credentials
-// Usage: delCreds();
-app.factory('delCreds', ['$cookies', function($cookies) {
-    return function() {
-        $cookies.appCreds = "";
-        $cookies.appUsername = "";
-    };
-}]);
-app.factory('getToken', ['$cookies', function($cookies) {
-    return function() {
-        var returnVal = "";
-        var appCreds = $cookies.appCreds;
-        if (appCreds !== undefined && appCreds !==""){
-            returnVal = btoa(appCreds);
-        }
-    return returnVal;
-    };
-}]);
-app.controller('mainController', function (postService, userKeepService, $scope, $rootScope) {
+
+app.controller('mainController', function ($scope, $rootScope, postService) {
     // add cookies reader to keep user login
     // read the tasks from db
     $scope.tasks = postService.query();
@@ -141,22 +84,26 @@ app.controller('mainController', function (postService, userKeepService, $scope,
         $scope.tasks = postService.query();
     };
 });
-app.controller('authController', function ($scope, $http, $rootScope, $location, $cookies, setCreds) {
+app.controller('authController', function ($scope, $http, $rootScope, $location) {
     $scope.user = {
         username: ''
         , password: ''
     };
     $scope.error_message = '';
+    
+    //show password function
+    $scope.showpassword = true;
+    $scope.showpass = function(){
+        $scope.showpassword = !$scope.showpassword;
+    };
+    
     $scope.login = function () {
         $http.post('/auth/login', $scope.user).success(function (data) {
             if (data.state == 'success') {
                 $rootScope.authenticated = true;
                 $rootScope.current_user = data.user.username;
                 // set cookies
-                setCreds($scope.user.username, $scope.user.password);
-                // comment the set cookie
-                //userKeepService.setCookieData(data.user.username);
-                //console.log(userKeepService.getCookieData());
+                
                 $location.path('/');
             }
             else {
