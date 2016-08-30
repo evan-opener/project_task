@@ -1,4 +1,5 @@
-'use strict'
+'use strict';
+
 var app = angular.module('pTask', ['ngRoute', 'ngResource', 'ngCookies']).run(function ($rootScope, $http, $location, $cookies) {
              
     $rootScope.authenticated = false;
@@ -17,13 +18,18 @@ var app = angular.module('pTask', ['ngRoute', 'ngResource', 'ngCookies']).run(fu
             if (next.includes('register')) {
                 //if link to resgister, allow
                 
+            } else if (next.includes('login')) {
+                //allow to sign in
+                $location.path('/login');
             } else {
-                //Otherwise direct to login
+                
+                $location.path('/');
             };
             
         } else {
             $rootScope.authenticated = true;
             $rootScope.current_user = user.username;
+            
         };
     });
     // signout and clean the cookies
