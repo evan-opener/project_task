@@ -1,7 +1,19 @@
 <form class="form-auth" ng-submit="register()">
-	<h2>Register</h2>
+	<h2 class="title">Register</h2>
 	<p class="text-warning">{{error_message}}</p>
+    <label class="form-label">USERNAME</label>
 	<input type="username" ng-model="user.username" placeholder="Username" class="form-control"><br>
-	<input type="password" ng-model="user.password" placeholder="Password" class="form-control"><br>
-    <input type="submit" value="Register" class="btn btn-primary"/>
+    <label class="form-label">PASSWORD</label>
+	<input class="form-control" type="password" ng-model="user.password" placeholder="Password" ng-show="showpassword">
+    <input class="form-control" type="text" ng-model="user.password" ng-hide="showpassword">
+    <div class="div-row row">
+            <span class="showpwd" ng-click="showpass()">
+            <img src="img/eye.png" />                
+            <span class="form-label">
+                SHOW
+            </span>
+
+            </span>
+        </div>
+    <input type="submit" value="Sign un" class="btn btn-auth btn-primary center-block" />
 </form>
