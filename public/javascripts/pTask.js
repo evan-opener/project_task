@@ -60,10 +60,22 @@ app.config(function ($routeProvider) {
         .when('/register', {
             templateUrl: 'register.html'
             , controller: 'authController'
-        });
+        })
+        //the task update view
+    /*
+        .when('/task/:id', {
+            templateUrl: 'update.html',
+            controller: 'updateController'
+           
+    });
+    
+     */
 });
+
 app.factory('postService', function ($resource) {
-    return $resource('/api/task/:id');
+    return $resource('/api/task/:id', null, {
+        'update': { method:'put' }
+    });
 });
 
 app.controller('mainController', function ($scope, $rootScope, postService) {
@@ -71,12 +83,7 @@ app.controller('mainController', function ($scope, $rootScope, postService) {
     // read the tasks from db
     $scope.tasks = postService.query();
     //console.log($scope.tasks); // debug1
-    $scope.newTask = {
-        created_by: ''
-        , text: ''
-        , created_at: ''
-        , pilot: ''
-    };
+
     $scope.pTask = function () {
         $scope.newTask.created_by = $rootScope.current_user;
         $scope.newTask.created_at = Date.now();
@@ -92,10 +99,33 @@ app.controller('mainController', function ($scope, $rootScope, postService) {
             };
         });
     };
-    $scope.detailTask = function (task) {
-        alert('check task ' + task._id);
-        //$scope.tasks = postService.query(this.id);
+    
+    $scope.updateTask = function (task) {
+        $scope.modifyTask = postService.get({
+            id: task._id
+        });
+        $scope.modifyTask._id = task._id;
+        
     };
+    
+    $scope.update = function (task) {
+        $scope.modifyTask.created_by = $rootScope.current_user;
+        $scope.modifyTask.created_at = Date.now();
+        postService.update({id: $scope.modifyTask._id}, $scope.modifyTask);
+        $scope.tasks = postService.query();
+        console.log('update task');
+        console.log($scope.modifyTask); //debug the db document saving
+        $scope.modifyTask = {
+            created_by: ''
+            , text: ''
+            , created_at: ''
+            , pilot: '',
+            _id: ''
+        };
+        
+    };   
+    
+    
     $scope.delTask = function (task) {
         //var $scope.taskId = task.objectID;
         alert('Remove task ' + task._id);
@@ -103,8 +133,16 @@ app.controller('mainController', function ($scope, $rootScope, postService) {
             id: task._id
         });
         $scope.tasks = postService.query();
-    };
+    };    
+        //$scope.tasks = postService.query(this.id);
 });
+
+app.controller('updateController'), function($scope, $rootScope, $routeParams, postService) {
+    var update = this;
+    update.task = $rootScope.updateTask;
+    
+}
+
 app.controller('authController', function ($scope, $http, $rootScope, $location, $cookies) {
     $scope.user = {
         username: ''

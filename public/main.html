@@ -33,7 +33,7 @@
                         <td>{{task.closeDate | date:"yyyy/MM/dd"}}</td>
                         <td>
                             <a class="btn btn-primary btn-sm" ng-click="delTask(task)" ng-show="authenticated">Delete</a>
-                            <a class="btn btn-primary btn-sm" ng-click="detailTask(task)" ng-show="authenticated">Detail</a>
+                            <a class="btn btn-primary btn-sm" ng-click="updateTask(task)" ng-show="authenticated">Update</a>
                     
                         </td>
                     </tr>
@@ -43,8 +43,8 @@
 		</div>
 </div>
 
-<div id="publish_task">
-	<form name="taskForm" ng-Submit="taskForm.$valid && pTask()" ng-show="authenticated" novalidate> <!--if submit, use task() -->
+<div id="publish_task" ng-hide="modifyTask._id">
+	<form name="taskForm1" ng-Submit="taskForm1.$valid && pTask()" ng-show="authenticated" novalidate> <!--if submit, use task() -->
 		<h2>Publish a task</h2>
 		<form role="form">
 			<div class="form-group">
@@ -63,5 +63,24 @@
 	</form>
  </div>
 
+<div ng-show="modifyTask._id" id="modify_task">
+	<form name="taskForm2" ng-Submit="taskForm2.$valid && update()" ng-show="authenticated" novalidate>
+        <h2>Update a task</h2>
+		<form role="form">
+			<div class="form-group">
+				<label for="task">Task description:</label>
+				<textarea class="form-control" placeholder="Write a description for a task" maxlength="200" rows="3" ng-model="modifyTask.text" required></textarea>
+			</div>
+			<div class="form-group">
+				<label for="pilot">Pilot</label>
+				<input type="polit" class="form-control" id="pilot" placeholder="Publish to" ng-model="modifyTask.pilot" required>
+			</div>
+			<div class="checkbox">
+				<label><input type="checkbox"> Notify polit</label>
+			</div>
+            <button type="submit" class="btn btn-default">Update</button>
+		</form>
+	</form>
+ </div>
 
 		
